@@ -19,14 +19,14 @@ func NewOrderedMap[K comparable, V any]() *OrderedMap[K, V] {
 	}
 }
 
-func OrderedMapFromMap[K comparable, V any](m map[K]V) *OrderedMap[K, V] {
+func OrderedMapFromMap[K comparable, V any](keys []K, m map[K]V) *OrderedMap[K, V] {
 	om := &OrderedMap[K, V]{
 		Keys: make([]K, 0),
 		Map:  make(map[K]V),
 	}
 
-	for k, v := range m {
-		om.Set(k, v)
+	for _, k := range keys {
+		om.Set(k, m[k])
 	}
 
 	return om

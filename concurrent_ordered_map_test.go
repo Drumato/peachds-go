@@ -18,7 +18,7 @@ func TestConcurrentOrderedMap_Set(t *testing.T) {
 }
 
 func TestConcurrentOrderedMap_Length(t *testing.T) {
-	m := peachds.ConcurrentOrderedMapFromMap(map[string]int{
+	m := peachds.ConcurrentOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
 		"one":   1,
 		"two":   2,
 		"three": 3,
@@ -28,7 +28,7 @@ func TestConcurrentOrderedMap_Length(t *testing.T) {
 }
 
 func TestConcurrentOrderedMap_Iter(t *testing.T) {
-	m := peachds.ConcurrentOrderedMapFromMap(map[string]int{
+	m := peachds.ConcurrentOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
 		"one":   1,
 		"two":   2,
 		"three": 3,

@@ -18,14 +18,14 @@ func NewConcurrentOrderedMap[K comparable, V any]() *ConcurrentOrderedMap[K, V] 
 	}
 }
 
-func ConcurrentOrderedMapFromMap[K comparable, V any](m map[K]V) *ConcurrentOrderedMap[K, V] {
+func ConcurrentOrderedMapFromMap[K comparable, V any](keys []K, m map[K]V) *ConcurrentOrderedMap[K, V] {
 	om := &ConcurrentOrderedMap[K, V]{
 		Keys: make([]K, 0),
 		Map:  make(map[K]V),
 	}
 
-	for k, v := range m {
-		om.Set(k, v)
+	for _, k := range keys {
+		om.Set(k, m[k])
 	}
 
 	return om
