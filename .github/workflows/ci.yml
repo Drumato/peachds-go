@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+
+    - name: install dependencies
+      run: go mod tidy
+
+    - name: format
+      run: go fmt ./...
+
+    - name: lint
+      run: go vet ./...
+
+    - name: test
+      run: go test -v ./...
+
+    - name: coverage
+      run: go test -coverprofile=coverage.out ./...
+
+    - name: upload the coverage
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.out
