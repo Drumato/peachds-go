@@ -78,3 +78,28 @@ func (o *ConcurrentOrderedMap[K, V]) Iter(
 	}
 
 }
+
+func (o *ConcurrentOrderedMap[K, V]) Delete(key K) (V, bool) {
+	o.mu.RLock()
+	foundIdx := -1
+	for i, k := range o.Keys {
+		if k == key {
+			foundIdx = i
+			break
+		}
+	}
+	o.mu.RUnlock()
+
+	var deleted V
+	if foundIdx == -1 {
+		return deleted, false
+	}
+
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	o.Keys = append(o.Keys[:foundIdx], o.Keys[foundIdx+1:]...)
+	deleted = o.Map[key]
+	delete(o.Map, key)
+	return deleted, true
+}

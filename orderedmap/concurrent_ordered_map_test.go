@@ -41,6 +41,20 @@ func TestConcurrentOrderedMap_Iter(t *testing.T) {
 	assert.Equal(t, 3, (<-ch).Value)
 }
 
+func TestConcurrentOrderedMap_Delete(t *testing.T) {
+	m := orderedmap.ConcurrentOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	})
+
+	m.Delete("two")
+	assert.Equal(t, 2, m.Length())
+	v, ok := m.Get("two")
+	assert.False(t, ok)
+	assert.Equal(t, 0, v)
+}
+
 func BenchmarkConcurrentOrderedMap_Set(b *testing.B) {
 	m := orderedmap.NewConcurrentOrderedMap[int, int]()
 
