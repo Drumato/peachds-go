@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSerialOrderedMap_Set(t *testing.T) {
-	m := &orderedmap.SerialOrderedMap[string, int]{
+func TestSingleThreadOrderedMap_Set(t *testing.T) {
+	m := &orderedmap.SingleThreadOrderedMap[string, int]{
 		Keys: make([]string, 0),
 		Map:  make(map[string]int),
 	}
@@ -20,8 +20,8 @@ func TestSerialOrderedMap_Set(t *testing.T) {
 	assert.Equal(t, 3, len(m.Map))
 }
 
-func TestSerialOrderedMap_Length(t *testing.T) {
-	m := orderedmap.SerialOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
+func TestSingleThreadOrderedMap_Length(t *testing.T) {
+	m := orderedmap.SingleThreadOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
 		"one":   1,
 		"two":   2,
 		"three": 3,
@@ -30,8 +30,8 @@ func TestSerialOrderedMap_Length(t *testing.T) {
 	assert.Equal(t, 3, m.Length())
 }
 
-func TestSerialOrderedMap_Iter(t *testing.T) {
-	m := orderedmap.SerialOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
+func TestSingleThreadOrderedMap_Iter(t *testing.T) {
+	m := orderedmap.SingleThreadOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
 		"one":   1,
 		"two":   2,
 		"three": 3,
@@ -44,8 +44,8 @@ func TestSerialOrderedMap_Iter(t *testing.T) {
 	assert.Equal(t, 3, (<-ch).Value)
 }
 
-func TestSerialOrderedMap_Delete(t *testing.T) {
-	m := orderedmap.SerialOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
+func TestSingleThreadOrderedMap_Delete(t *testing.T) {
+	m := orderedmap.SingleThreadOrderedMapFromMap([]string{"one", "two", "three"}, map[string]int{
 		"one":   1,
 		"two":   2,
 		"three": 3,
@@ -58,8 +58,8 @@ func TestSerialOrderedMap_Delete(t *testing.T) {
 	assert.Equal(t, 0, v)
 }
 
-func BenchmarkSerialOrderedMap_Set(b *testing.B) {
-	m := orderedmap.NewSerialOrderedMap[int, int]()
+func BenchmarkSingleThreadOrderedMap_Set(b *testing.B) {
+	m := orderedmap.NewSingleThreadOrderedMap[int, int]()
 
 	b.ResetTimer()
 	for i := range b.N {
@@ -67,9 +67,9 @@ func BenchmarkSerialOrderedMap_Set(b *testing.B) {
 	}
 }
 
-func BenchmarkSerialOrderedMap_Get(b *testing.B) {
+func BenchmarkSingleThreadOrderedMap_Get(b *testing.B) {
 	b.StopTimer()
-	m := orderedmap.NewSerialOrderedMap[int, int]()
+	m := orderedmap.NewSingleThreadOrderedMap[int, int]()
 	for i := range b.N {
 		m.Set(i, i)
 	}
@@ -81,9 +81,9 @@ func BenchmarkSerialOrderedMap_Get(b *testing.B) {
 	}
 }
 
-func BenchmarkSerialOrderedMap_Iter(b *testing.B) {
+func BenchmarkSingleThreadOrderedMap_Iter(b *testing.B) {
 	b.StopTimer()
-	m := orderedmap.NewSerialOrderedMap[int, int]()
+	m := orderedmap.NewSingleThreadOrderedMap[int, int]()
 	for i := range b.N {
 		m.Set(i, i)
 	}
